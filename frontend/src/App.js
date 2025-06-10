@@ -6,6 +6,9 @@ import ReportList from './pages/ReportList';
 import ReportForm from './pages/ReportForm';
 import UploadMedia from './pages/UploadMedia';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
+import CaseDashboard from './pages/CaseDashboard';
+import ReportDashboard from './pages/ReportDashboard';
+
 
 import './App.css';
 
@@ -20,18 +23,17 @@ function App() {
             <Link to="/reports">📄 Reports</Link>
             <Link to="/cases/new">➕ Add Case</Link>
             <Link to="/reports/new">➕ Add Report</Link>
-            <Link to="/upload">Upload</Link>
             <Link to="/analytics">Analytics</Link>
           </nav>
         </header>
         <main>
           <Routes>
-            <Route path="/cases" element={<CaseList />} />
             <Route path="/cases/new" element={<CaseForm />} />
-            <Route path="/reports" element={<ReportList />} />
             <Route path="/reports/new" element={<ReportForm />} />
-            <Route path="/upload" element={<UploadMedia />} />
             <Route path="/analytics" element={<AnalyticsDashboard />} /> 
+            <Route path="/cases" element={<CaseDashboard />} />
+            <Route path="/reports" element={<ReportDashboard />} />
+
           </Routes>
         </main>
       </div>

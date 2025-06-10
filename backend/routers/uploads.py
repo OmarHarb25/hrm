@@ -8,10 +8,8 @@ UPLOAD_DIR = "uploads"
 
 @router.post("/upload/")
 async def upload_file(file: UploadFile = File(...)):
-    # Create uploads directory if not exist
     os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-    # Create a unique filename
     filename = f"{uuid4()}_{file.filename}"
     file_path = os.path.join(UPLOAD_DIR, filename)
 
