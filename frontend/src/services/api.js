@@ -15,16 +15,34 @@ export const submitIndividual = (data) => api.post('/individuals/', data, header
 export const updateRisk = (id, data) => api.patch(`/individuals/${id}/risk`, data, headers);
 
 
-export const fetchCases = () => api.get('/cases/');
-export const submitCase = (data) => api.post('/cases', data, headers);
+export const fetchCases = () => api.get('/cases/', headers);
+export const submitCase = (data) => api.post('/cases/', data, headers); 
 export const deleteCaseById = (id) => api.delete(`/cases/${id}`, headers);
-export const updateCaseById = (id, data) => api.put(`/cases/${id}`, data, headers);
+export const updateCaseById = (id, data) => api.put(`/cases/${id}`, data, headers); 
 
 
-export const fetchReports = () => api.get('/reports/');
+export const fetchReports = () => api.get('/reports/', headers);
 export const submitReport = (data) => api.post('/reports/', data, headers);
-export const updateReport = (id, data) => api.put(`/reports/${id}`, data, headers);
+export const updateReport = async (reportId, reportData) => {
+  try {
+    const response = await fetch(`/api/reports/${reportId}`, {
+      method: 'PUT', 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reportData),
+    });
 
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error updating report:', error);
+    throw error;
+  }
+};
 
 export const uploadFile = (formData) =>
   api.post('/upload/', formData, {
@@ -35,4 +53,3 @@ export const uploadFile = (formData) =>
   });
 
 export const fetchSummaryStats = () => api.get('/analytics/summary', headers);
-

@@ -8,6 +8,8 @@ import UploadMedia from './pages/UploadMedia';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import CaseDashboard from './pages/CaseDashboard';
 import ReportDashboard from './pages/ReportDashboard';
+import ReportEdit from './pages/ReportEdit';
+
 
 
 import './App.css';
@@ -21,7 +23,6 @@ function App() {
           <nav>
             <Link to="/cases">📁 Cases</Link>
             <Link to="/reports">📄 Reports</Link>
-            <Link to="/cases/new">➕ Add Case</Link>
             <Link to="/reports/new">➕ Add Report</Link>
             <Link to="/analytics">Analytics</Link>
           </nav>
@@ -33,6 +34,7 @@ function App() {
             <Route path="/analytics" element={<AnalyticsDashboard />} /> 
             <Route path="/cases" element={<CaseDashboard />} />
             <Route path="/reports" element={<ReportDashboard />} />
+            <Route path="/reports/edit/:reportId" element={<ReportEdit />} />
 
           </Routes>
         </main>

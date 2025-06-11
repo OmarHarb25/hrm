@@ -30,18 +30,29 @@ async def list_reports(
         r["_id"] = str(r["_id"])
     return reports
 
-@router.patch("/reports/{report_id}")
-async def update_report_status(report_id: str, status: str):
-    result = await db["incident_reports"].update_one({"report_id": report_id}, {"$set": {"status": status}})
+@router.put("/reports/{report_id}")
+async def update_report(report_id: str, report: IncidentReport):
+    """Update an entire report"""
+    report_dict = report.dict()
+    report_dict["updated_at"] = datetime.utcnow().isoformat()
+    
+    result = await db["incident_reports"].update_one(
+        {"report_id": report_id}, 
+        {"$set": report_dict}
+    )
+    
     if result.modified_count == 0:
-        raise HTTPException(status_code=404, detail="Report not updated")
-    return {"msg": "Report status updated"}
+        raise HTTPException(status_code=404, detail="Report not found or not updated")
+    
+    return {"msg": "Report updated successfully", "report_id": report_id}
 
-@router.get("/reports/analytics")
-async def analytics():
-    pipeline = [
-        {"$unwind": "$incident_details.violation_types"},
-        {"$group": {"_id": "$incident_details.violation_types", "count": {"$sum": 1}}}
-    ]
-    data = await db["incident_reports"].aggregate(pipeline).to_list(length=10)
-    return data
+@router.get("/reports/{report_id}")
+async def get_report(report_id: str):
+    """Get a specific report by ID"""
+    report = await db["incident_reports"].find_one({"report_id": report_id})
+    
+    if not report:
+        raise HTTPException(status_code=404, detail="Report not found")
+    
+    report["_id"] = str(report["_id"])
+    return report
